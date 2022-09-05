@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "lerna": "^5.5.0"
+  },
+  "name": "lerna-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ]
+}

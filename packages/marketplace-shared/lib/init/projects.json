@@ -1,0 +1,9 @@
+{
+    "projects": [
+        "https://github.com/bricedenice59/marketplace-contract-solidity.git",
+        "https://github.com/bricedenice59/marketplace-graphQL.git",
+        "https://github.com/bricedenice59/marketplace-frontend.git",
+        "https://github.com/bricedenice59/multisig-wallet-contract-solidity.git",
+        "https://github.com/bricedenice59/multisig-wallet-graphQL.git"
+    ]
+}

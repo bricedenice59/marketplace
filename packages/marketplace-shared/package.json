@@ -1,0 +1,22 @@
+{
+    "name": "marketplace-shared",
+    "version": "1.0.0",
+    "description": "> TODO: description",
+    "author": "Brice Grenard <brice.grenard@gmail.com>",
+    "homepage": "",
+    "license": "ISC",
+    "main": "lib/marketplace-shared.js",
+    "directories": {
+        "lib": "lib"
+    },
+    "files": [
+        "lib"
+    ],
+    "devDependencies": {
+        "dotenv": "^16.0.2",
+        "dotenv-expand": "^8.0.3",
+        "hardhat": "^2.9.9",
+        "request": "^2.88.2",
+        "request-promise": "^4.2.6"
+    }
+}
