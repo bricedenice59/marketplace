@@ -1,13 +1,23 @@
 require("dotenv").config();
 const request = require("request-promise");
 
+var _url;
+var _auth_key;
+const DB_SCHEMA_NAME = "dbMarketplace";
+const TABLE_DEPLOYED_ADDRESSES_ABIS_NAME = "contracts";
+
+function setDbConfig(endpoint_url, auth_key) {
+    _url = endpoint_url;
+    _auth_key = auth_key;
+}
+
 function getDbConfig(_method) {
     return (options = {
         method: _method,
-        url: process.env.HARPERDB_CLOUD_ENPOINT,
+        url: _url,
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Basic ${process.env.HARPERDB_AUTH_KEY}`,
+            Authorization: `Basic ${_auth_key}`,
         },
     });
 }
@@ -25,13 +35,7 @@ async function describeSchema(schemaName) {
         schema: schemaName,
     });
     const config = postData(data);
-    try {
-        await request(config);
-        return true;
-    } catch (error) {
-        //schema does not exist
-        return false;
-    }
+    return await execute(config);
 }
 
 async function dropSchema(schemaName) {
@@ -85,14 +89,32 @@ async function execute(options) {
         return true;
     } catch (error) {
         console.log(error);
-        throw error;
+    }
+}
+
+async function execSQL(_sql) {
+    if (!_sql) throw new Error("parameter sql must not be null");
+    var data = JSON.stringify({
+        operation: "sql",
+        sql: _sql,
+    });
+    const config = postData(data);
+    try {
+        return await request(config);
+    } catch (error) {
+        console.log(error);
+        return { error: error };
     }
 }
 
 module.exports = {
+    DB_SCHEMA_NAME,
+    TABLE_DEPLOYED_ADDRESSES_ABIS_NAME,
     createSchema,
     createTable,
     describeSchema,
     dropSchema,
+    execSQL,
     insertIntoTable,
+    setDbConfig,
 };

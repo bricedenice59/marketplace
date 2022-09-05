@@ -5,8 +5,9 @@
   "version": "1.0.0",
   "command": {
     "bootstrap": {
+      "npmClient": "npm",
       "npmClientArgs": ["--legacy-peer-deps"]
     }
   },
-  "packages": ["packages/*"]
+  "packages": ["packages/marketplace-shared"]
 }
