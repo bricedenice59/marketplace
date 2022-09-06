@@ -5,6 +5,7 @@ var _url;
 var _auth_key;
 const DB_SCHEMA_NAME = "dbMarketplace";
 const TABLE_DEPLOYED_ADDRESSES_ABIS_NAME = "contracts";
+const TABLE_COURSES = "courses";
 
 function setDbConfig(endpoint_url, auth_key) {
     _url = endpoint_url;
@@ -38,11 +39,35 @@ async function describeSchema(schemaName) {
     return await execute(config);
 }
 
+async function describeTable(schemaName, tableName) {
+    if (!tableName || !schemaName)
+        throw new Error("parameter schemaName and tableName must not be null");
+    var data = JSON.stringify({
+        operation: "describe_table",
+        table: tableName,
+        schema: schemaName,
+    });
+    const config = postData(data);
+    return await execute(config);
+}
+
 async function dropSchema(schemaName) {
     if (!schemaName) throw new Error("parameter schemaName must not be null");
     var data = JSON.stringify({
         operation: "drop_schema",
         schema: schemaName,
+    });
+    const config = postData(data);
+    return await execute(config);
+}
+
+async function dropTable(schemaName, tableName) {
+    if (!tableName || !schemaName)
+        throw new Error("parameter schemaName and tableName must not be null");
+    var data = JSON.stringify({
+        operation: "drop_table",
+        schema: schemaName,
+        table: tableName,
     });
     const config = postData(data);
     return await execute(config);
@@ -74,8 +99,8 @@ async function insertIntoTable(schemaName, tableName, jsonContent) {
 
     var data = JSON.stringify({
         operation: "insert",
-        schema: "dbMarketplace",
-        table: "contracts",
+        schema: schemaName,
+        table: tableName,
         records: jsonContent,
     });
 
@@ -89,6 +114,7 @@ async function execute(options) {
         return true;
     } catch (error) {
         console.log(error);
+        return false;
     }
 }
 
@@ -109,11 +135,14 @@ async function execSQL(_sql) {
 
 module.exports = {
     DB_SCHEMA_NAME,
+    TABLE_COURSES,
     TABLE_DEPLOYED_ADDRESSES_ABIS_NAME,
     createSchema,
     createTable,
     describeSchema,
+    describeTable,
     dropSchema,
+    dropTable,
     execSQL,
     insertIntoTable,
     setDbConfig,
